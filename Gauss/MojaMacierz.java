@@ -49,8 +49,10 @@ public class MojaMacierz{
   static void PG(float[][] A, float[] B){
     float max;
     int p;
+    int j;
+    float wspolczynnik;
     for (int i=0;i<N;i++){
-      for (int j=i;j<N;j++){
+        j=i;
         max = abs(A[i][j]);
         p=i;
         for (int k=i+1;k<N;k++){
@@ -69,45 +71,48 @@ public class MojaMacierz{
           B[i] = B[p];
           B[p] = tmp;
         }
-      }
-      System.out.println();
-      System.out.println();
-
-      for (int ii=0;ii<N;ii++){
-        for (int jj=0;jj<N;jj++){
-          System.out.print(A[ii][jj] + " ");
+        for (int k=i+1;k<N;k++){
+          wspolczynnik=A[k][j]/A[i][j];
+          for (int l=j;l<N;l++){
+            float tmp =A[k][l];
+            A[k][l]=tmp-(wspolczynnik*A[i][l]);
+          }
+          B[k]=B[k]-(wspolczynnik*B[i]);
         }
-        System.out.print("| " + B[ii]);
-        System.out.println();
-      }
 
+      /*System.out.println();
+      System.out.println();
+
+      drukujMacierz(A,B);*/
     }
+  }
 
+  static void drukujMacierz(float[][] A, float[] B){
+
+    for (int i=0;i<N;i++){
+      for (int j=0;j<N;j++){
+        System.out.format("%10f", A[i][j]);
+        System.out.print(" ");
+      }
+      System.out.print("| " + B[i]);
+      System.out.println();
+    }
   }
 
 	public static void main(String[] args){
 
     float[][] mf = losuj_A_float();
     float[] wf= losuj_B_float();
-    for (int i=0;i<N;i++){
-      for (int j=0;j<N;j++){
-        System.out.print(mf[i][j] + " ");
-      }
-      System.out.print("| " + wf[i]);
-      System.out.println();
-    }
+    float a = 1;
+
+    drukujMacierz(mf,wf);
 
     PG(mf,wf);
     System.out.println();
     System.out.println();
 
-    for (int i=0;i<N;i++){
-      for (int j=0;j<N;j++){
-        System.out.print(mf[i][j] + " ");
-      }
-      System.out.print("| " + wf[i]);
-      System.out.println();
-    }
+    drukujMacierz(mf,wf);
+
     /*double[][] md = losuj_A_double();
     double[] wd = losuj_B_double();
     for (int i=0;i<N;i++){
