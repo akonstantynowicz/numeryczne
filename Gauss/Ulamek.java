@@ -2,7 +2,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class Ulamek {
-    static int N = MojaMacierz.N;
 
     private BigInteger licznik;
     private BigInteger mianownik;
@@ -45,7 +44,7 @@ public class Ulamek {
     }
 
     public static Ulamek losujAUlamek() {
-        Ulamek[][] macierz = new Ulamek[N][N];
+        Ulamek[][] macierz = new Ulamek[Macierze.N][Macierze.N];
         return new Ulamek();
     }
 
