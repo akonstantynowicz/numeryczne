@@ -2,7 +2,7 @@
 import static java.lang.Math.*;
 import java.util.Random;
 public class MojaMacierz{
-  static int N=4;
+  static int N=10;
 
   static int losuj_r(){
     Random ran = new Random();
@@ -79,48 +79,96 @@ public class MojaMacierz{
           }
           B[k]=B[k]-(wspolczynnik*B[i]);
         }
-
-      /*System.out.println();
-      System.out.println();
-
-      drukujMacierz(A,B);*/
     }
   }
+
+  static void PG(double[][] A, double[] B){
+    double max;
+    int p;
+    int j;
+    double wspolczynnik;
+    for (int i=0;i<N;i++){
+        j=i;
+        max = abs(A[i][j]);
+        p=i;
+        for (int k=i+1;k<N;k++){
+          if(abs(A[k][j])>max){
+            max=abs(A[k][j]);
+            p=k;
+          }
+        }
+        if (A[i][j]!=max){
+          for (int l=0;l<N;l++){
+            double tmp = A[i][l];
+            A[i][l] = A[p][l];
+            A[p][l] = tmp;
+          }
+          double tmp = B[i];
+          B[i] = B[p];
+          B[p] = tmp;
+        }
+        for (int k=i+1;k<N;k++){
+          wspolczynnik=A[k][j]/A[i][j];
+          for (int l=j;l<N;l++){
+            double tmp =A[k][l];
+            A[k][l]=tmp-(wspolczynnik*A[i][l]);
+          }
+          B[k]=B[k]-(wspolczynnik*B[i]);
+        }
+    }
+  }
+
+  
 
   static void drukujMacierz(float[][] A, float[] B){
 
     for (int i=0;i<N;i++){
       for (int j=0;j<N;j++){
-        System.out.format("%10f", A[i][j]);
+        System.out.format("%14.10f", A[i][j]);
         System.out.print(" ");
       }
       System.out.print("| " + B[i]);
       System.out.println();
     }
+    System.out.println();
+  }
+
+  static void drukujMacierz(double[][] A, double[] B){
+    for (int i=0;i<N;i++){
+      for (int j=0;j<N;j++){
+        System.out.format("%20.16f", A[i][j]);
+        System.out.print(" ");
+      }
+      System.out.print("| " + B[i]);
+      System.out.println();
+    }
+    System.out.println();
   }
 
 	public static void main(String[] args){
 
     float[][] mf = losuj_A_float();
     float[] wf= losuj_B_float();
-    float a = 1;
+
+    System.out.println("FLOAT");
 
     drukujMacierz(mf,wf);
 
     PG(mf,wf);
-    System.out.println();
-    System.out.println();
 
     drukujMacierz(mf,wf);
 
-    /*double[][] md = losuj_A_double();
+    System.out.println();
+    System.out.println("DOUBLE");
+
+    double[][] md = losuj_A_double();
     double[] wd = losuj_B_double();
-    for (int i=0;i<N;i++){
-      for (int j=0;j<N;j++){
-        System.out.print(md[i][j] + " ");
-      }
-      System.out.print("| " + wd[i]);
-      System.out.println();
-    }*/
+
+    drukujMacierz(md,wd);
+
+    PG(md,wd);
+
+    drukujMacierz(md,wd);
+
 	}
 }
