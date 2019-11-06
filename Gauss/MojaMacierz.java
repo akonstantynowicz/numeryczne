@@ -1,4 +1,5 @@
 //Anna Konstantynowicz, gr. 3
+//Marcin Szczepaniak, gr. 3
 
 import static java.lang.Math.*;
 

@@ -1,3 +1,5 @@
+//Marcin Szczepaniak, gr. 3
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -37,18 +39,5 @@ public class Ulamek {
     @Override
     public String toString() {
         return licznik + "/" + mianownik;
-    }
-
-    public static Ulamek losujRUlamek() {
-        return new Ulamek();
-    }
-
-    public static Ulamek losujAUlamek() {
-        Ulamek[][] macierz = new Ulamek[Macierze.N][Macierze.N];
-        return new Ulamek();
-    }
-
-    public static Ulamek losujBUlamek() {
-        return new Ulamek();
     }
 }

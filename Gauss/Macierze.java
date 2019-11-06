@@ -1,3 +1,5 @@
+//Marcin Szczepaniak, gr. 3
+
 import java.util.Random;
 
 public class Macierze {
