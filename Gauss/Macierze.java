@@ -1,3 +1,5 @@
+//Marcin Szczepaniak, gr. 3
+
 import java.util.Random;
 
 public class Macierze {
@@ -38,7 +40,7 @@ public class Macierze {
                 r = losujR();
                 macierzF[i][j] = (float) r/65536;
                 macierzD[i][j] = (double) r/65536;
-                macierzU[i][j] = new Ulamek(r/65536);
+                macierzU[i][j] = new Ulamek((double) r/65536);
             }
         }
     }
