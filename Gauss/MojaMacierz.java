@@ -9,7 +9,6 @@ public class MojaMacierz {
     static int N = 10;
 
     static void G(float[][] A, float[] B) {
-        int p;
         int j;
         float wspolczynnik;
         for (int i = 0; i < N; i++) {
@@ -28,6 +27,8 @@ public class MojaMacierz {
     static void G(double[][] A, double[] B) {
         int j;
         double wspolczynnik;
+        for (int i = 0; i < N; i++) {
+            j = i;
             for (int k = i + 1; k < N; k++) {
                 wspolczynnik = A[k][j] / A[i][j];
                 for (int l = j; l < N; l++) {
@@ -37,6 +38,7 @@ public class MojaMacierz {
                 B[k] = B[k] - (wspolczynnik * B[i]);
             }
         }
+    }
 
     static void PG(float[][] A, float[] B) {
         float max;
@@ -74,6 +76,8 @@ public class MojaMacierz {
         }
     }
 
+
+
     static void PG(double[][] A, double[] B) {
         double max;
         int p;
@@ -110,6 +114,43 @@ public class MojaMacierz {
         }
     }
 
+    //TODO
+    static void PG(Ulamek[][] A, Ulamek[] B) {
+        Ulamek max;
+        int p;
+        int j;
+        Ulamek wspolczynnik;
+        for (int i = 0; i < N; i++) {
+            j = i;
+            max = A[i][j].abs();
+            p = i;
+            for (int k = i + 1; k < N; k++) {
+                if (A[k][j].abs().isGreaterThan(max)) {
+                    max = A[k][j].abs();
+                    p = k;
+                }
+            }
+            if (A[i][j].equals(max) == false) {
+                for (int l = 0; l < N; l++) {
+                    Ulamek tmp = A[i][l];
+                    A[i][l] = A[p][l];
+                    A[p][l] = tmp;
+                }
+                Ulamek tmp = B[i];
+                B[i] = B[p];
+                B[p] = tmp;
+            }
+            for (int k = i + 1; k < N; k++) {
+                wspolczynnik = A[k][j].divide(A[i][j]);
+                for (int l = j; l < N; l++) {
+                    Ulamek tmp = A[k][l];
+                    A[k][l] = tmp.subtract(wspolczynnik.multiply(A[i][l]));
+                }
+                B[k] = B[k].subtract(wspolczynnik.multiply(B[i]));
+            }
+        }
+    }
+
     static void drukujMacierz(float[][] A, float[] B) {
 
         for (int i = 0; i < N; i++) {
@@ -127,6 +168,18 @@ public class MojaMacierz {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 System.out.format("%20.16f", A[i][j]);
+                System.out.print(" ");
+            }
+            System.out.print("| " + B[i]);
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    static void drukujMacierz(Ulamek[][] A, Ulamek[] B) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                System.out.print(A[i][j]);
                 System.out.print(" ");
             }
             System.out.print("| " + B[i]);
@@ -155,6 +208,15 @@ public class MojaMacierz {
         PG(m.macierzD, m.wektorD);
 
         drukujMacierz(m.macierzD, m.wektorD);
+
+        System.out.println();
+        System.out.println("ULAMEK");
+
+        drukujMacierz(m.macierzU, m.wektorU);
+
+        PG(m.macierzU, m.wektorU);
+
+        drukujMacierz(m.macierzU, m.wektorU);
 
     }
 }
