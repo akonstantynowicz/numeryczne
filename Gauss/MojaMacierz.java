@@ -212,11 +212,11 @@ public class MojaMacierz {
         System.out.println();
         System.out.println("ULAMEK");
 
-        drukujMacierz(m.macierzU, m.wektorU);
+        //drukujMacierz(m.macierzU, m.wektorU);
 
-        PG(m.macierzU, m.wektorU);
+        //PG(m.macierzU, m.wektorU);
 
-        drukujMacierz(m.macierzU, m.wektorU);
+        //drukujMacierz(m.macierzU, m.wektorU);
 
     }
 }
