@@ -1,10 +1,11 @@
 //Marcin Szczepaniak, gr. 3
+//Anna Konstantynowicz gr. 3
 
 import java.util.Random;
 
 public class Macierze {
 
-    public static int N=10;
+    public static int N=4;
 
     public float[][] macierzF;
     public double[][] macierzD;

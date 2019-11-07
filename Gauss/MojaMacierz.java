@@ -6,7 +6,7 @@ import static java.lang.Math.*;
 import java.util.Random;
 
 public class MojaMacierz {
-    static int N = 10;
+    static int N = 4;
 
     static void G(float[][] A, float[] B) {
         int j;
@@ -150,6 +150,32 @@ public class MojaMacierz {
             }
         }
     }
+    
+    static float[] dajWynik(float[][] A, float[] B) {
+		float[] wynik = new float[N];
+		float[] tmp = new float[N-1];
+		for (int i=N-1;i>=0;i--){
+			for (int j=N-1;j>i;j--){
+				tmp[j-1] = A[i][j]*wynik[j];
+				B[i]=B[i]-tmp[j-1];
+			}
+			wynik[i]=B[i]/A[i][i];
+		}
+		return wynik;
+	}
+	
+	 static double[] dajWynik(double[][] A, double[] B) {
+		double[] wynik = new double[N];
+		double[] tmp = new double[N-1];
+		for (int i=N-1;i>=0;i--){
+			for (int j=N-1;j>i;j--){
+				tmp[j-1] = A[i][j]*wynik[j];
+				B[i]=B[i]-tmp[j-1];
+			}
+			wynik[i]=B[i]/A[i][i];
+		}
+		return wynik;
+	}
 
     static void drukujMacierz(float[][] A, float[] B) {
 
@@ -191,16 +217,45 @@ public class MojaMacierz {
     public static void main(String[] args) {
 
         Macierze m = new Macierze();
-
-        System.out.println("FLOAT");
+        
+        //test poprawnosci
+        float[][] testA = new float[N][N];
+        for (int i=0;i<N;i++){
+			for (int j=0;j<N;j++){
+				testA[i][j] = 1;
+			}
+		}
+		testA[1][1]=-1;
+		testA[2][1]=-1;
+		testA[2][2]=-1;
+		testA[3][0]=2;
+		testA[3][3]=-1;
+		
+		float[] testB= new float[N];
+		testB[0]=2;
+		testB[1]=-2;
+		testB[2]=-2;
+		testB[3]=5;
+		
+		System.out.println("TEST POPRAWNOSCI");
+		drukujMacierz(testA, testB);
+		PG(testA,testB);
+		drukujMacierz(testA,testB);
+        float[] wynik = dajWynik(testA, testB);
+        
+        for (int i=0;i<N;i++){
+			System.out.println("x" + i + "=" + wynik[i]);
+		}
+		
+		 /*System.out.println("FLOAT");
 
         drukujMacierz(m.macierzF, m.wektorF);
 
         PG(m.macierzF, m.wektorF);
 
-        drukujMacierz(m.macierzF, m.wektorF);
+        drukujMacierz(m.macierzF, m.wektorF);*/
 
-        System.out.println();
+       /* System.out.println();
         System.out.println("DOUBLE");
 
         drukujMacierz(m.macierzD, m.wektorD);
@@ -210,7 +265,7 @@ public class MojaMacierz {
         drukujMacierz(m.macierzD, m.wektorD);
 
         System.out.println();
-        System.out.println("ULAMEK");
+        System.out.println("ULAMEK");*/
 
         //drukujMacierz(m.macierzU, m.wektorU);
 

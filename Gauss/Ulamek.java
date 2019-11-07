@@ -1,4 +1,5 @@
 //Marcin Szczepaniak, gr. 3
+//Anna Konstantynowicz, gr. 3
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
