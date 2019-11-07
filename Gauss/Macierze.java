@@ -52,7 +52,7 @@ public class Macierze {
             r = losujR();
             wektorF[i]= (float) r/65536;
             wektorD[i]= (double) r/65536;
-            wektorU[i]= new Ulamek(r/65536);
+            wektorU[i]= new Ulamek((double) r/65536);
         }
     }
 }

@@ -76,8 +76,6 @@ public class MojaMacierz {
         }
     }
 
-
-
     static void PG(double[][] A, double[] B) {
         double max;
         int p;
@@ -114,7 +112,6 @@ public class MojaMacierz {
         }
     }
 
-    //TODO
     static void PG(Ulamek[][] A, Ulamek[] B) {
         Ulamek max;
         int p;
@@ -132,18 +129,18 @@ public class MojaMacierz {
             }
             if (A[i][j].equals(max) == false) {
                 for (int l = 0; l < N; l++) {
-                    Ulamek tmp = A[i][l];
-                    A[i][l] = A[p][l];
-                    A[p][l] = tmp;
+                    Ulamek tmp = new Ulamek(A[i][l]);
+                    A[i][l] = new Ulamek(A[p][l]);
+                    A[p][l] = new Ulamek(tmp);
                 }
-                Ulamek tmp = B[i];
-                B[i] = B[p];
-                B[p] = tmp;
+                Ulamek tmp = new Ulamek(B[i]);
+                B[i] = new Ulamek(B[p]);
+                B[p] = new Ulamek(tmp);
             }
             for (int k = i + 1; k < N; k++) {
                 wspolczynnik = A[k][j].divide(A[i][j]);
                 for (int l = j; l < N; l++) {
-                    Ulamek tmp = A[k][l];
+                    Ulamek tmp = new Ulamek(A[k][l]);
                     A[k][l] = tmp.subtract(wspolczynnik.multiply(A[i][l]));
                 }
                 B[k] = B[k].subtract(wspolczynnik.multiply(B[i]));
@@ -205,10 +202,10 @@ public class MojaMacierz {
     static void drukujMacierz(Ulamek[][] A, Ulamek[] B) {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                System.out.print(A[i][j]);
+                System.out.format("%20.16f", A[i][j].toDouble());
                 System.out.print(" ");
             }
-            System.out.print("| " + B[i]);
+            System.out.print("| " + B[i].toDouble());
             System.out.println();
         }
         System.out.println();
@@ -255,7 +252,7 @@ public class MojaMacierz {
 
         drukujMacierz(m.macierzF, m.wektorF);*/
 
-       /* System.out.println();
+        System.out.println();
         System.out.println("DOUBLE");
 
         drukujMacierz(m.macierzD, m.wektorD);
@@ -265,13 +262,23 @@ public class MojaMacierz {
         drukujMacierz(m.macierzD, m.wektorD);
 
         System.out.println();
-        System.out.println("ULAMEK");*/
+        System.out.println("ULAMEK");
 
-        //drukujMacierz(m.macierzU, m.wektorU);
+        drukujMacierz(m.macierzU, m.wektorU);
 
-        //PG(m.macierzU, m.wektorU);
+        PG(m.macierzU, m.wektorU);
 
-        //drukujMacierz(m.macierzU, m.wektorU);
+        drukujMacierz(m.macierzU, m.wektorU);
+
+        Ulamek u = new Ulamek(0.5);
+        System.out.println(u);
+        Ulamek uu = new Ulamek(-0.6);
+        System.out.println(uu);
+        System.out.println(u.subtract(uu));
+        System.out.println(u.divide(uu));
+        System.out.println(u);
+        System.out.println(uu);
+        System.out.println(u.multiply(uu));
 
     }
 }

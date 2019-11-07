@@ -1,6 +1,8 @@
 //Marcin Szczepaniak, gr. 3
 //Anna Konstantynowicz, gr. 3
 
+import com.sun.org.apache.bcel.internal.generic.BIPUSH;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -25,6 +27,12 @@ public class Ulamek {
         skroc();
     }
 
+    public Ulamek(Ulamek u) {
+        this.licznik = u.licznik;
+        this.mianownik = u.mianownik;
+        skroc();
+    }
+
     public Ulamek(BigInteger licznik, BigInteger mianownik) {
         this.licznik = licznik;
         this.mianownik = mianownik;
@@ -34,13 +42,16 @@ public class Ulamek {
     public void skroc() {
         BigInteger gcd = mianownik.gcd(licznik);
         if (licznik.equals(BigInteger.ZERO)) {
-            mianownik = BigInteger.ZERO;
+            mianownik = BigInteger.ONE;
         }
         if (gcd.equals(BigInteger.ZERO) == false) {
             licznik = licznik.divide(gcd);
             mianownik = mianownik.divide(gcd);
         }
-
+        if (mianownik.compareTo(BigInteger.ZERO) == -1) {
+            licznik = licznik.negate();
+            mianownik = mianownik.negate();
+        }
     }
 
     public Ulamek subtract(Ulamek u) {
@@ -48,7 +59,7 @@ public class Ulamek {
         BigInteger m = this.mianownik;
 
         this.licznik = this.licznik.multiply(u.mianownik);
-        this.mianownik = this.licznik.multiply(u.mianownik);
+        this.mianownik = this.mianownik.multiply(u.mianownik);
         u.licznik = u.licznik.multiply(m);
         u.mianownik = u.mianownik.multiply(m);
 
@@ -102,8 +113,21 @@ public class Ulamek {
         }
     }
 
+    public double toDouble() {
+        if (licznik == BigInteger.ZERO) {
+            return 0;
+        }
+        else {
+            return licznik.doubleValue() / mianownik.doubleValue();
+        }
+    }
+
+    public String toStringUlamek() {
+        return licznik + "/" + mianownik;
+    }
+
     @Override
     public String toString() {
-        return licznik + "/" + mianownik;
+        return "" + this.toDouble();
     }
 }
