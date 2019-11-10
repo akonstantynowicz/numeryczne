@@ -147,7 +147,61 @@ public class MojaMacierz {
             }
         }
     }
-    
+
+    static void FG(float[][] A, float[] B) {
+        float[] Q = new float[N];
+        for(int i=0;i<N;i++){
+          Q[i]=i;
+        }
+        float max;
+        int maxI,maxJ;
+        int j;
+        float wspolczynnik;
+        for (int i = 0; i < N; i++) {
+            j = i;
+            max = abs(A[i][j]);
+            maxI = i;
+            maxJ = j;
+            for (int k = i + 1; k < N; k++) {
+              for (int l= j; l<N;l++){
+                if (abs(A[k][l]) > max) {
+                  max = abs(A[k][l]);
+                  maxI = k;
+                  maxJ = l;
+                }
+              }
+            }
+            if (i != maxI) {
+                for (int l = 0; l < N; l++) {
+                    float tmp = A[i][l];
+                    A[i][l] = A[maxI][l];
+                    A[maxI][l] = tmp;
+                }
+                float tmp = B[i];
+                B[i] = B[maxI];
+                B[maxI] = tmp;
+            }
+            if (j != maxJ) {
+              float tmp = Q[j];
+              Q[j] = Q[maxJ];
+              Q[maxJ] = tmp;
+                for (int l = 0; l < N; l++) {
+                    tmp = A[l][j];
+                    A[l][j] = A[l][maxJ];
+                    A[l][maxJ] = tmp;
+                }
+            }
+            for (int k = i + 1; k < N; k++) {
+                wspolczynnik = A[k][j] / A[i][j];
+                for (int l = j; l < N; l++) {
+                    float tmp = A[k][l];
+                    A[k][l] = tmp - (wspolczynnik * A[i][l]);
+                }
+                B[k] = B[k] - (wspolczynnik * B[i]);
+            }
+        }
+    }
+
     static float[] dajWynik(float[][] A, float[] B) {
 		float[] wynik = new float[N];
 		float[] tmp = new float[N-1];
@@ -160,7 +214,7 @@ public class MojaMacierz {
 		}
 		return wynik;
 	}
-	
+
 	 static double[] dajWynik(double[][] A, double[] B) {
 		double[] wynik = new double[N];
 		double[] tmp = new double[N-1];
@@ -214,9 +268,13 @@ public class MojaMacierz {
     public static void main(String[] args) {
 
         Macierze m = new Macierze();
-        
+
+        drukujMacierz(m.macierzF, m.wektorF);
+        FG(m.macierzF,m.wektorF);
+        drukujMacierz(m.macierzF, m.wektorF);
+
         //test poprawnosci
-        float[][] testA = new float[N][N];
+      /*  float[][] testA = new float[N][N];
         for (int i=0;i<N;i++){
 			for (int j=0;j<N;j++){
 				testA[i][j] = 1;
@@ -227,23 +285,23 @@ public class MojaMacierz {
 		testA[2][2]=-1;
 		testA[3][0]=2;
 		testA[3][3]=-1;
-		
+
 		float[] testB= new float[N];
 		testB[0]=2;
 		testB[1]=-2;
 		testB[2]=-2;
 		testB[3]=5;
-		
+
 		System.out.println("TEST POPRAWNOSCI");
 		drukujMacierz(testA, testB);
 		PG(testA,testB);
 		drukujMacierz(testA,testB);
         float[] wynik = dajWynik(testA, testB);
-        
+
         for (int i=0;i<N;i++){
 			System.out.println("x" + i + "=" + wynik[i]);
-		}
-		
+		}*/
+
 		 /*System.out.println("FLOAT");
 
         drukujMacierz(m.macierzF, m.wektorF);
