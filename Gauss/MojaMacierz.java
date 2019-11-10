@@ -40,6 +40,22 @@ public class MojaMacierz {
         }
     }
 
+    static void G(Ulamek[][] A, Ulamek[] B) {
+        int j;
+        Ulamek wspolczynnik;
+        for (int i = 0; i < N; i++) {
+            j = i;
+            for (int k = i + 1; k < N; k++) {
+                wspolczynnik = A[k][j].divide(A[i][j]);
+                for (int l = j; l < N; l++) {
+                    Ulamek tmp = new Ulamek(A[k][l]);
+                    A[k][l] = tmp.subtract(wspolczynnik.multiply(A[i][l]));
+                }
+                B[k] = B[k].subtract(wspolczynnik.multiply(B[i]));
+            }
+        }
+    }
+
     static void PG(float[][] A, float[] B) {
         float max;
         int p;
@@ -150,11 +166,11 @@ public class MojaMacierz {
 
     static float[] FG(float[][] A, float[] B) {
         int[] Q = new int[N];
-        for(int i=0;i<N;i++){
-          Q[i]=i;
+        for (int i = 0; i < N; i++) {
+            Q[i] = i;
         }
         float max;
-        int maxI,maxJ;
+        int maxI, maxJ;
         int j;
         float wspolczynnik;
         for (int i = 0; i < N; i++) {
@@ -163,13 +179,13 @@ public class MojaMacierz {
             maxI = i;
             maxJ = j;
             for (int k = i + 1; k < N; k++) {
-              for (int l= j; l<N;l++){
-                if (abs(A[k][l]) > max) {
-                  max = abs(A[k][l]);
-                  maxI = k;
-                  maxJ = l;
+                for (int l = j; l < N; l++) {
+                    if (abs(A[k][l]) > max) {
+                        max = abs(A[k][l]);
+                        maxI = k;
+                        maxJ = l;
+                    }
                 }
-              }
             }
             if (i != maxI) {
                 for (int l = 0; l < N; l++) {
@@ -182,9 +198,9 @@ public class MojaMacierz {
                 B[maxI] = tmp;
             }
             if (j != maxJ) {
-              int tmp = Q[j];
-              Q[j] = Q[maxJ];
-              Q[maxJ] = tmp;
+                int tmp = Q[j];
+                Q[j] = Q[maxJ];
+                Q[maxJ] = tmp;
                 for (int l = 0; l < N; l++) {
                     float tmpr = A[l][j];
                     A[l][j] = A[l][maxJ];
@@ -200,17 +216,17 @@ public class MojaMacierz {
                 B[k] = B[k] - (wspolczynnik * B[i]);
             }
         }
-        float[] wynik = dajWynikFG(A,B,Q);
+        float[] wynik = dajWynikFG(A, B, Q);
         return wynik;
     }
 
     static double[] FG(double[][] A, double[] B) {
         int[] Q = new int[N];
-        for(int i=0;i<N;i++){
-          Q[i]=i;
+        for (int i = 0; i < N; i++) {
+            Q[i] = i;
         }
         double max;
-        int maxI,maxJ;
+        int maxI, maxJ;
         int j;
         double wspolczynnik;
         for (int i = 0; i < N; i++) {
@@ -219,13 +235,13 @@ public class MojaMacierz {
             maxI = i;
             maxJ = j;
             for (int k = i + 1; k < N; k++) {
-              for (int l= j; l<N;l++){
-                if (abs(A[k][l]) > max) {
-                  max = abs(A[k][l]);
-                  maxI = k;
-                  maxJ = l;
+                for (int l = j; l < N; l++) {
+                    if (abs(A[k][l]) > max) {
+                        max = abs(A[k][l]);
+                        maxI = k;
+                        maxJ = l;
+                    }
                 }
-              }
             }
             if (i != maxI) {
                 for (int l = 0; l < N; l++) {
@@ -238,9 +254,9 @@ public class MojaMacierz {
                 B[maxI] = tmp;
             }
             if (j != maxJ) {
-              int tmp = Q[j];
-              Q[j] = Q[maxJ];
-              Q[maxJ] = tmp;
+                int tmp = Q[j];
+                Q[j] = Q[maxJ];
+                Q[maxJ] = tmp;
                 for (int l = 0; l < N; l++) {
                     double tmpr = A[l][j];
                     A[l][j] = A[l][maxJ];
@@ -256,69 +272,155 @@ public class MojaMacierz {
                 B[k] = B[k] - (wspolczynnik * B[i]);
             }
         }
-        double[] wynik = dajWynikFG(A,B,Q);
+        double[] wynik = dajWynikFG(A, B, Q);
+        return wynik;
+    }
+
+    static Ulamek[] FG(Ulamek[][] A, Ulamek[] B) {
+        int[] Q = new int[N];
+        for (int i = 0; i < N; i++) {
+            Q[i] = i;
+        }
+        Ulamek max;
+        int maxI, maxJ;
+        int j;
+        Ulamek wspolczynnik;
+        for (int i = 0; i < N; i++) {
+            j = i;
+            max = A[i][j].abs();
+            maxI = i;
+            maxJ = j;
+            for (int k = i + 1; k < N; k++) {
+                for (int l = j; l < N; l++) {
+                    if (A[k][l].abs().isGreaterThan(max)) {
+                        max = A[k][l].abs();
+                        maxI = k;
+                        maxJ = l;
+                    }
+                }
+            }
+            if (i != maxI) {
+                for (int l = 0; l < N; l++) {
+                    Ulamek tmp = new Ulamek(A[i][l]);
+                    A[i][l] = new Ulamek(A[maxI][l]);
+                    A[maxI][l] = new Ulamek(tmp);
+                }
+                Ulamek tmp = new Ulamek(B[i]);
+                B[i] = new Ulamek(B[maxI]);
+                B[maxI] = new Ulamek(tmp);
+            }
+            if (j != maxJ) {
+                int tmp = Q[j];
+                Q[j] = Q[maxJ];
+                Q[maxJ] = tmp;
+                for (int l = 0; l < N; l++) {
+                    Ulamek tmpr = new Ulamek(A[l][j]);
+                    A[l][j] = new Ulamek(A[l][maxJ]);
+                    A[l][maxJ] = new Ulamek(tmpr);
+                }
+            }
+            for (int k = i + 1; k < N; k++) {
+                wspolczynnik = A[k][j].divide(A[i][j]);
+                for (int l = j; l < N; l++) {
+                    Ulamek tmp = new Ulamek(A[k][l]);
+                    A[k][l] = tmp.subtract(wspolczynnik.multiply(A[i][l]));
+                }
+                B[k] = B[k].subtract(wspolczynnik.multiply(B[i]));
+            }
+        }
+        Ulamek[] wynik = dajWynikFG(A, B, Q);
+        return wynik;
+    }
+
+    static float[] dajWynikFG(float[][] A, float[] B, int[] Q) {
+        float[] wyniktmp = new float[N];
+        float[] wynik = new float[N];
+        float[] tmp = new float[N - 1];
+        for (int i = N - 1; i >= 0; i--) {
+            for (int j = N - 1; j > i; j--) {
+                tmp[j - 1] = A[i][j] * wyniktmp[j];
+                B[i] = B[i] - tmp[j - 1];
+            }
+            wyniktmp[i] = B[i] / A[i][i];
+        }
+        for (int i = 0; i < N; i++) {
+            wynik[Q[i]] = wyniktmp[i];
+        }
+        return wynik;
+    }
+
+    static double[] dajWynikFG(double[][] A, double[] B, int[] Q) {
+        double[] wyniktmp = new double[N];
+        double[] wynik = new double[N];
+        double[] tmp = new double[N - 1];
+        for (int i = N - 1; i >= 0; i--) {
+            for (int j = N - 1; j > i; j--) {
+                tmp[j - 1] = A[i][j] * wyniktmp[j];
+                B[i] = B[i] - tmp[j - 1];
+            }
+            wyniktmp[i] = B[i] / A[i][i];
+        }
+        for (int i = 0; i < N; i++) {
+            wynik[Q[i]] = wyniktmp[i];
+        }
+        return wynik;
+    }
+
+    static Ulamek[] dajWynikFG(Ulamek[][] A, Ulamek[] B, int[] Q) {
+        Ulamek[] wyniktmp = new Ulamek[N];
+        Ulamek[] wynik = new Ulamek[N];
+        Ulamek[] tmp = new Ulamek[N - 1];
+        for (int i = N - 1; i >= 0; i--) {
+            for (int j = N - 1; j > i; j--) {
+                tmp[j - 1] = A[i][j].multiply(wyniktmp[j]);
+                B[i] = B[i].subtract(tmp[j - 1]);
+            }
+            wyniktmp[i] = B[i].divide(A[i][i]);
+        }
+        for (int i = 0; i < N; i++) {
+            wynik[Q[i]] = new Ulamek(wyniktmp[i]);
+        }
         return wynik;
     }
 
     static float[] dajWynik(float[][] A, float[] B) {
-		float[] wynik = new float[N];
-		float[] tmp = new float[N-1];
-		for (int i=N-1;i>=0;i--){
-			for (int j=N-1;j>i;j--){
-				tmp[j-1] = A[i][j]*wynik[j];
-				B[i]=B[i]-tmp[j-1];
-			}
-			wynik[i]=B[i]/A[i][i];
-		}
-		return wynik;
-	}
-
-  static float[] dajWynikFG(float[][] A, float[] B,int[] Q) {
-  float[] wyniktmp = new float[N];
-  float[] wynik = new float[N];
-  float[] tmp = new float[N-1];
-  for (int i=N-1;i>=0;i--){
-    for (int j=N-1;j>i;j--){
-      tmp[j-1] = A[i][j]*wyniktmp[j];
-      B[i]=B[i]-tmp[j-1];
+        float[] wynik = new float[N];
+        float[] tmp = new float[N - 1];
+        for (int i = N - 1; i >= 0; i--) {
+            for (int j = N - 1; j > i; j--) {
+                tmp[j - 1] = A[i][j] * wynik[j];
+                B[i] = B[i] - tmp[j - 1];
+            }
+            wynik[i] = B[i] / A[i][i];
+        }
+        return wynik;
     }
-    wyniktmp[i]=B[i]/A[i][i];
-  }
-  for (int i=0;i<N;i++){
-      wynik[Q[i]]=wyniktmp[i];
-  }
-  return wynik;
-  }
 
-  static double[] dajWynikFG(double[][] A, double[] B,int[] Q) {
-  double[] wyniktmp = new double[N];
-  double[] wynik = new double[N];
-  double[] tmp = new double[N-1];
-  for (int i=N-1;i>=0;i--){
-    for (int j=N-1;j>i;j--){
-      tmp[j-1] = A[i][j]*wyniktmp[j];
-      B[i]=B[i]-tmp[j-1];
+    static double[] dajWynik(double[][] A, double[] B) {
+        double[] wynik = new double[N];
+        double[] tmp = new double[N - 1];
+        for (int i = N - 1; i >= 0; i--) {
+            for (int j = N - 1; j > i; j--) {
+                tmp[j - 1] = A[i][j] * wynik[j];
+                B[i] = B[i] - tmp[j - 1];
+            }
+            wynik[i] = B[i] / A[i][i];
+        }
+        return wynik;
     }
-    wyniktmp[i]=B[i]/A[i][i];
-  }
-  for (int i=0;i<N;i++){
-      wynik[Q[i]]=wyniktmp[i];
-  }
-  return wynik;
-  }
 
-	 static double[] dajWynik(double[][] A, double[] B) {
-		double[] wynik = new double[N];
-		double[] tmp = new double[N-1];
-		for (int i=N-1;i>=0;i--){
-			for (int j=N-1;j>i;j--){
-				tmp[j-1] = A[i][j]*wynik[j];
-				B[i]=B[i]-tmp[j-1];
-			}
-			wynik[i]=B[i]/A[i][i];
-		}
-		return wynik;
-	}
+    static Ulamek[] dajWynik(Ulamek[][] A, Ulamek[] B) {
+        Ulamek[] wynik = new Ulamek[N];
+        Ulamek[] tmp = new Ulamek[N - 1];
+        for (int i = N - 1; i >= 0; i--) {
+            for (int j = N - 1; j > i; j--) {
+                tmp[j - 1] = A[i][j].multiply(wynik[j]);
+                B[i] = B[i].subtract(tmp[j - 1]);
+            }
+            wynik[i] = B[i].divide(A[i][i]);
+        }
+        return wynik;
+    }
 
     static void drukujMacierz(float[][] A, float[] B) {
 
@@ -361,17 +463,29 @@ public class MojaMacierz {
 
         Macierze m = new Macierze();
 
-        PG(m.macierzD, m.wektorD);
-        double[] wynik1 = dajWynik(m.macierzD,m.wektorD);
         drukujMacierz(m.macierzF, m.wektorF);
-        float[] wynik = FG(m.macierzF,m.wektorF);
-        for (int i=0;i<N;i++){
-			       System.out.println("x" + i + "=" + wynik[i]);
-		    }
+        drukujMacierz(m.macierzD, m.wektorD);
+        drukujMacierz(m.macierzU, m.wektorU);
+
+        float[] wynik = FG(m.macierzF, m.wektorF);
+        double[] wynik1 = FG(m.macierzD, m.wektorD);
+        Ulamek[] wynik2 = FG(m.macierzU, m.wektorU);
+
+        drukujMacierz(m.macierzF, m.wektorF);
+        drukujMacierz(m.macierzD, m.wektorD);
+        drukujMacierz(m.macierzU, m.wektorU);
+
+        for (int i = 0; i < N; i++) {
+            System.out.println("x" + i + "=" + wynik[i]);
+        }
         System.out.println();
-        for (int i=0;i<N;i++){
-			       System.out.println("x" + i + "=" + wynik1[i]);
-		    }
+        for (int i = 0; i < N; i++) {
+            System.out.println("x" + i + "=" + wynik1[i]);
+        }
+        System.out.println();
+        for (int i = 0; i < N; i++) {
+            System.out.println("x" + i + "=" + wynik2[i]);
+        }
 
         //test poprawnosci
       /*  float[][] testA = new float[N][N];
