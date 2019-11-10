@@ -148,8 +148,8 @@ public class MojaMacierz {
         }
     }
 
-    static void FG(float[][] A, float[] B) {
-        float[] Q = new float[N];
+    static float[] FG(float[][] A, float[] B) {
+        int[] Q = new int[N];
         for(int i=0;i<N;i++){
           Q[i]=i;
         }
@@ -182,13 +182,13 @@ public class MojaMacierz {
                 B[maxI] = tmp;
             }
             if (j != maxJ) {
-              float tmp = Q[j];
+              int tmp = Q[j];
               Q[j] = Q[maxJ];
               Q[maxJ] = tmp;
                 for (int l = 0; l < N; l++) {
-                    tmp = A[l][j];
+                    float tmpr = A[l][j];
                     A[l][j] = A[l][maxJ];
-                    A[l][maxJ] = tmp;
+                    A[l][maxJ] = tmpr;
                 }
             }
             for (int k = i + 1; k < N; k++) {
@@ -200,6 +200,64 @@ public class MojaMacierz {
                 B[k] = B[k] - (wspolczynnik * B[i]);
             }
         }
+        float[] wynik = dajWynikFG(A,B,Q);
+        return wynik;
+    }
+
+    static double[] FG(double[][] A, double[] B) {
+        int[] Q = new int[N];
+        for(int i=0;i<N;i++){
+          Q[i]=i;
+        }
+        double max;
+        int maxI,maxJ;
+        int j;
+        double wspolczynnik;
+        for (int i = 0; i < N; i++) {
+            j = i;
+            max = abs(A[i][j]);
+            maxI = i;
+            maxJ = j;
+            for (int k = i + 1; k < N; k++) {
+              for (int l= j; l<N;l++){
+                if (abs(A[k][l]) > max) {
+                  max = abs(A[k][l]);
+                  maxI = k;
+                  maxJ = l;
+                }
+              }
+            }
+            if (i != maxI) {
+                for (int l = 0; l < N; l++) {
+                    double tmp = A[i][l];
+                    A[i][l] = A[maxI][l];
+                    A[maxI][l] = tmp;
+                }
+                double tmp = B[i];
+                B[i] = B[maxI];
+                B[maxI] = tmp;
+            }
+            if (j != maxJ) {
+              int tmp = Q[j];
+              Q[j] = Q[maxJ];
+              Q[maxJ] = tmp;
+                for (int l = 0; l < N; l++) {
+                    double tmpr = A[l][j];
+                    A[l][j] = A[l][maxJ];
+                    A[l][maxJ] = tmpr;
+                }
+            }
+            for (int k = i + 1; k < N; k++) {
+                wspolczynnik = A[k][j] / A[i][j];
+                for (int l = j; l < N; l++) {
+                    double tmp = A[k][l];
+                    A[k][l] = tmp - (wspolczynnik * A[i][l]);
+                }
+                B[k] = B[k] - (wspolczynnik * B[i]);
+            }
+        }
+        double[] wynik = dajWynikFG(A,B,Q);
+        return wynik;
     }
 
     static float[] dajWynik(float[][] A, float[] B) {
@@ -214,6 +272,40 @@ public class MojaMacierz {
 		}
 		return wynik;
 	}
+
+  static float[] dajWynikFG(float[][] A, float[] B,int[] Q) {
+  float[] wyniktmp = new float[N];
+  float[] wynik = new float[N];
+  float[] tmp = new float[N-1];
+  for (int i=N-1;i>=0;i--){
+    for (int j=N-1;j>i;j--){
+      tmp[j-1] = A[i][j]*wyniktmp[j];
+      B[i]=B[i]-tmp[j-1];
+    }
+    wyniktmp[i]=B[i]/A[i][i];
+  }
+  for (int i=0;i<N;i++){
+      wynik[Q[i]]=wyniktmp[i];
+  }
+  return wynik;
+  }
+
+  static double[] dajWynikFG(double[][] A, double[] B,int[] Q) {
+  double[] wyniktmp = new double[N];
+  double[] wynik = new double[N];
+  double[] tmp = new double[N-1];
+  for (int i=N-1;i>=0;i--){
+    for (int j=N-1;j>i;j--){
+      tmp[j-1] = A[i][j]*wyniktmp[j];
+      B[i]=B[i]-tmp[j-1];
+    }
+    wyniktmp[i]=B[i]/A[i][i];
+  }
+  for (int i=0;i<N;i++){
+      wynik[Q[i]]=wyniktmp[i];
+  }
+  return wynik;
+  }
 
 	 static double[] dajWynik(double[][] A, double[] B) {
 		double[] wynik = new double[N];
@@ -269,9 +361,17 @@ public class MojaMacierz {
 
         Macierze m = new Macierze();
 
+        PG(m.macierzD, m.wektorD);
+        double[] wynik1 = dajWynik(m.macierzD,m.wektorD);
         drukujMacierz(m.macierzF, m.wektorF);
-        FG(m.macierzF,m.wektorF);
-        drukujMacierz(m.macierzF, m.wektorF);
+        float[] wynik = FG(m.macierzF,m.wektorF);
+        for (int i=0;i<N;i++){
+			       System.out.println("x" + i + "=" + wynik[i]);
+		    }
+        System.out.println();
+        for (int i=0;i<N;i++){
+			       System.out.println("x" + i + "=" + wynik1[i]);
+		    }
 
         //test poprawnosci
       /*  float[][] testA = new float[N][N];
@@ -310,7 +410,7 @@ public class MojaMacierz {
 
         drukujMacierz(m.macierzF, m.wektorF);*/
 
-        System.out.println();
+        /*System.out.println();
         System.out.println("DOUBLE");
 
         drukujMacierz(m.macierzD, m.wektorD);
@@ -336,7 +436,7 @@ public class MojaMacierz {
         System.out.println(u.divide(uu));
         System.out.println(u);
         System.out.println(uu);
-        System.out.println(u.multiply(uu));
+        System.out.println(u.multiply(uu));*/
 
     }
 }
