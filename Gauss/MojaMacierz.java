@@ -3,6 +3,9 @@
 
 import static java.lang.Math.*;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 
 public class MojaMacierz {
@@ -14,6 +17,7 @@ public class MojaMacierz {
         for (int i = 0; i < N; i++) {
             j = i;
             for (int k = i + 1; k < N; k++) {
+
                 wspolczynnik = A[k][j] / A[i][j];
                 for (int l = j; l < N; l++) {
                     float tmp = A[k][l];
@@ -28,6 +32,7 @@ public class MojaMacierz {
         int j;
         double wspolczynnik;
         for (int i = 0; i < N; i++) {
+            System.out.println("[" + i + "]");
             j = i;
             for (int k = i + 1; k < N; k++) {
                 wspolczynnik = A[k][j] / A[i][j];
@@ -48,6 +53,7 @@ public class MojaMacierz {
             for (int k = i + 1; k < N; k++) {
                 wspolczynnik = A[k][j].divide(A[i][j]);
                 for (int l = j; l < N; l++) {
+                    System.out.println("[" + i + "]" + "[" + k + "]");
                     Ulamek tmp = new Ulamek(A[k][l]);
                     A[k][l] = tmp.subtract(wspolczynnik.multiply(A[i][l]));
                 }
@@ -459,98 +465,91 @@ public class MojaMacierz {
         System.out.println();
     }
 
-    public static void main(String[] args) {
+    public static void H1()
+            throws IOException {
 
-        Macierze m = new Macierze();
+        BufferedWriter writer = new BufferedWriter(new FileWriter("gaussWyniki.txt"));
 
-        drukujMacierz(m.macierzF, m.wektorF);
-        drukujMacierz(m.macierzD, m.wektorD);
-        drukujMacierz(m.macierzU, m.wektorU);
+        for (int i = 490; i <= 500; i = i + 10) {
 
-        float[] wynik = FG(m.macierzF, m.wektorF);
-        double[] wynik1 = FG(m.macierzD, m.wektorD);
-        Ulamek[] wynik2 = FG(m.macierzU, m.wektorU);
+            N = i;
+            Macierze m1 = new Macierze(N);
+            Macierze m2 = new Macierze(N);
+            Macierze m3 = new Macierze(N);
 
-        drukujMacierz(m.macierzF, m.wektorF);
-        drukujMacierz(m.macierzD, m.wektorD);
-        drukujMacierz(m.macierzU, m.wektorU);
+            m2.kopiujMacierz(m1);
+            m3.kopiujMacierz(m1);
 
-        for (int i = 0; i < N; i++) {
-            System.out.println("x" + i + "=" + wynik[i]);
+            System.out.println("N = " + N);
+            String dataLine = N + " / ";
+
+            long start = System.nanoTime();
+            G(m1.macierzD, m1.wektorD);
+            long elapsedTime = System.nanoTime() - start;
+            dataLine = dataLine + (double) elapsedTime / 1000000000 + " / ";
+            System.out.println((double) elapsedTime / 1000000000);
+
+            start = System.nanoTime();
+            PG(m2.macierzD, m2.wektorD);
+            elapsedTime = System.nanoTime() - start;
+            dataLine = dataLine + (double)elapsedTime / 1000000000 + " / ";
+            System.out.println((double) elapsedTime / 1000000000);
+
+            start = System.nanoTime();
+            FG(m3.macierzD, m3.wektorD);
+            elapsedTime = System.nanoTime() - start;
+            dataLine = dataLine + (double) elapsedTime / 1000000000 ;
+            System.out.println((double) elapsedTime / 1000000000);
+
+            writer.write(dataLine);
+            writer.write("\n");
         }
-        System.out.println();
-        for (int i = 0; i < N; i++) {
-            System.out.println("x" + i + "=" + wynik1[i]);
-        }
-        System.out.println();
-        for (int i = 0; i < N; i++) {
-            System.out.println("x" + i + "=" + wynik2[i]);
-        }
+        writer.close();
+    }
 
-        //test poprawnosci
-      /*  float[][] testA = new float[N][N];
-        for (int i=0;i<N;i++){
-			for (int j=0;j<N;j++){
-				testA[i][j] = 1;
-			}
-		}
-		testA[1][1]=-1;
-		testA[2][1]=-1;
-		testA[2][2]=-1;
-		testA[3][0]=2;
-		testA[3][3]=-1;
+    public static void main(String[] args) throws IOException {
 
-		float[] testB= new float[N];
-		testB[0]=2;
-		testB[1]=-2;
-		testB[2]=-2;
-		testB[3]=5;
+        //H1
+        H1();
 
-		System.out.println("TEST POPRAWNOSCI");
-		drukujMacierz(testA, testB);
-		PG(testA,testB);
-		drukujMacierz(testA,testB);
-        float[] wynik = dajWynik(testA, testB);
+        //E1
+//        N = 500;
+//        Macierze m1 = new Macierze(N);
+//        Macierze m2 = new Macierze(N);
+//        Macierze m3 = new Macierze(N);
+//
+//        m2.kopiujMacierz(m1);
+//        m3.kopiujMacierz(m1);
+//        System.out.println("==============================");
+//
+//        long start = System.nanoTime();
+//        G(m1.macierzD, m1.wektorD);
+//        long elapsedTime = System.nanoTime() - start;
+//        System.out.println((double) elapsedTime / 1000000000 );
+//
+//        start = System.nanoTime();
+//        G(m2.macierzU, m2.wektorU);
+//        elapsedTime = System.nanoTime() - start;
+//        System.out.println(elapsedTime);
 
-        for (int i=0;i<N;i++){
-			System.out.println("x" + i + "=" + wynik[i]);
-		}*/
+//        //test poprawnosci
+//        Macierze m1 = new Macierze(N);
+//        Macierze m2 = new Macierze(N);
+//        m2.kopiujMacierz(m1);
+//
+//        drukujMacierz(m1.macierzF, m1.wektorF);
+//        drukujMacierz(m2.macierzF, m2.wektorF);
+//
+//        PG(m1.macierzU, m1.wektorU);
+//        Ulamek[] wynik1 = dajWynik(m1.macierzU, m1.wektorU);
+//        Ulamek[] wynik2 = FG(m2.macierzU, m2.wektorU);
+//
+//
+//        for (int i=0;i<N;i++){
+//			System.out.println("x" + i + "=" + wynik1[i]);
+//            System.out.println("x" + i + "=" + wynik2[i]);
+//		}
 
-		 /*System.out.println("FLOAT");
-
-        drukujMacierz(m.macierzF, m.wektorF);
-
-        PG(m.macierzF, m.wektorF);
-
-        drukujMacierz(m.macierzF, m.wektorF);*/
-
-        /*System.out.println();
-        System.out.println("DOUBLE");
-
-        drukujMacierz(m.macierzD, m.wektorD);
-
-        PG(m.macierzD, m.wektorD);
-
-        drukujMacierz(m.macierzD, m.wektorD);
-
-        System.out.println();
-        System.out.println("ULAMEK");
-
-        drukujMacierz(m.macierzU, m.wektorU);
-
-        PG(m.macierzU, m.wektorU);
-
-        drukujMacierz(m.macierzU, m.wektorU);
-
-        Ulamek u = new Ulamek(0.5);
-        System.out.println(u);
-        Ulamek uu = new Ulamek(-0.6);
-        System.out.println(uu);
-        System.out.println(u.subtract(uu));
-        System.out.println(u.divide(uu));
-        System.out.println(u);
-        System.out.println(uu);
-        System.out.println(u.multiply(uu));*/
 
     }
 }
