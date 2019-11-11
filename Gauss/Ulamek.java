@@ -8,10 +8,8 @@ import java.math.BigInteger;
 
 public class Ulamek {
 
-    private BigInteger licznik;
-    private BigInteger mianownik;
-
-    public Ulamek() { }
+    final private BigInteger licznik;
+    final private BigInteger mianownik;
 
     public Ulamek(float x) {
         this(Double.valueOf(x));
@@ -22,73 +20,64 @@ public class Ulamek {
         String a = "" + x;
         String spilts[] = a.split("\\."); // split using decimal
         int b = spilts[1].length(); // find the decimal length
-        mianownik = BigDecimal.valueOf(Math.pow(10, b)).toBigInteger();
-        licznik =  BigDecimal.valueOf(x * Math.pow(10, b)).toBigInteger();
-        skroc();
+        BigInteger mianownik = BigDecimal.valueOf(Math.pow(10, b)).toBigInteger();
+        BigInteger licznik =  BigDecimal.valueOf(x * Math.pow(10, b)).toBigInteger();
+
+        if (mianownik.equals(BigInteger.ZERO)) {
+            throw new IllegalArgumentException("The denominator is zero.");
+        }
+        if (licznik.equals(BigInteger.ZERO)) {
+            this.licznik = BigInteger.ZERO;
+            this.mianownik = BigInteger.ONE;
+        } else {
+            if (mianownik.compareTo(BigInteger.ZERO) == -1) {
+                licznik = licznik.negate();
+                mianownik = mianownik.negate();
+            }
+            BigInteger gcd = licznik.gcd(mianownik);
+            this.licznik = licznik.divide(gcd);
+            this.mianownik = mianownik.divide(gcd);
+        }
     }
 
     public Ulamek(Ulamek u) {
         this.licznik = u.licznik;
         this.mianownik = u.mianownik;
-        skroc();
     }
 
+    //https://codereview.stackexchange.com/questions/165219/implementation-of-a-fraction-class-in-java immutability
     public Ulamek(BigInteger licznik, BigInteger mianownik) {
-        this.licznik = licznik;
-        this.mianownik = mianownik;
-        skroc();
+        if (mianownik.equals(BigInteger.ZERO)) {
+            throw new IllegalArgumentException("The denominator is zero.");
+        }
+        if (licznik.equals(BigInteger.ZERO)) {
+            this.licznik = BigInteger.ZERO;
+            this.mianownik = BigInteger.ONE;
+        } else {
+            if (mianownik.compareTo(BigInteger.ZERO) == -1) {
+                licznik = licznik.negate();
+                mianownik = mianownik.negate();
+            }
+            BigInteger gcd = licznik.gcd(mianownik);
+            this.licznik = licznik.divide(gcd);
+            this.mianownik = mianownik.divide(gcd);
+        }
     }
 
-    public void skroc() {
-        BigInteger gcd = mianownik.gcd(licznik);
-        if (licznik.equals(BigInteger.ZERO)) {
-            mianownik = BigInteger.ONE;
-        }
-        if (gcd.equals(BigInteger.ZERO) == false) {
-            licznik = licznik.divide(gcd);
-            mianownik = mianownik.divide(gcd);
-        }
-        if (mianownik.compareTo(BigInteger.ZERO) == -1) {
-            licznik = licznik.negate();
-            mianownik = mianownik.negate();
-        }
-    }
 
     public Ulamek subtract(Ulamek u) {
-        Ulamek uu = new Ulamek();
-        BigInteger m = this.mianownik;
-
-        this.licznik = this.licznik.multiply(u.mianownik);
-        this.mianownik = this.mianownik.multiply(u.mianownik);
-        u.licznik = u.licznik.multiply(m);
-        u.mianownik = u.mianownik.multiply(m);
-
-        uu.licznik = this.licznik.subtract(u.licznik);
-        uu.mianownik = this.mianownik;
-
-        this.skroc();
-        u.skroc();
-        uu.skroc();
-
-        return uu;
+        return new Ulamek(
+                this.licznik.multiply(u.mianownik).subtract(u.licznik.multiply(this.mianownik)),
+                this.mianownik.multiply(u.mianownik)
+        );
     }
 
     public Ulamek multiply(Ulamek u) {
-        Ulamek uu = new Ulamek();
-        uu.licznik = this.licznik.multiply(u.licznik);
-        uu.mianownik = this.mianownik.multiply(u.mianownik);
-        uu.skroc();
-
-        return uu;
+        return new Ulamek(this.licznik.multiply(u.licznik), this.mianownik.multiply(u.mianownik));
     }
 
     public Ulamek divide(Ulamek u) {
-        Ulamek uu = new Ulamek();
-        uu.licznik = this.licznik.multiply(u.mianownik);
-        uu.mianownik = this.mianownik.multiply(u.licznik);
-        uu.skroc();
-
-        return uu;
+        return new Ulamek( this.licznik.multiply(u.mianownik), this.mianownik.multiply(u.licznik));
     }
 
     public Ulamek abs() {
@@ -102,8 +91,6 @@ public class Ulamek {
     }
 
     public boolean equals(Ulamek u) {
-        this.skroc();
-        u.skroc();
 
         if (this.licznik.equals(u.licznik) && this.mianownik.equals(u.mianownik)) {
             return true;

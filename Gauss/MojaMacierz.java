@@ -31,8 +31,8 @@ public class MojaMacierz {
     static void G(double[][] A, double[] B) {
         int j;
         double wspolczynnik;
+        System.out.println("G dla D, N = " + N);
         for (int i = 0; i < N; i++) {
-            System.out.println("[" + i + "]");
             j = i;
             for (int k = i + 1; k < N; k++) {
                 wspolczynnik = A[k][j] / A[i][j];
@@ -48,12 +48,13 @@ public class MojaMacierz {
     static void G(Ulamek[][] A, Ulamek[] B) {
         int j;
         Ulamek wspolczynnik;
+        System.out.println("G dla U,  N = " + N);
         for (int i = 0; i < N; i++) {
+
             j = i;
             for (int k = i + 1; k < N; k++) {
                 wspolczynnik = A[k][j].divide(A[i][j]);
                 for (int l = j; l < N; l++) {
-                    System.out.println("[" + i + "]" + "[" + k + "]");
                     Ulamek tmp = new Ulamek(A[k][l]);
                     A[k][l] = tmp.subtract(wspolczynnik.multiply(A[i][l]));
                 }
@@ -465,52 +466,10 @@ public class MojaMacierz {
         System.out.println();
     }
 
-    public static void H1()
-            throws IOException {
-
-        BufferedWriter writer = new BufferedWriter(new FileWriter("gaussWyniki.txt"));
-
-        for (int i = 490; i <= 500; i = i + 10) {
-
-            N = i;
-            Macierze m1 = new Macierze(N);
-            Macierze m2 = new Macierze(N);
-            Macierze m3 = new Macierze(N);
-
-            m2.kopiujMacierz(m1);
-            m3.kopiujMacierz(m1);
-
-            System.out.println("N = " + N);
-            String dataLine = N + " / ";
-
-            long start = System.nanoTime();
-            G(m1.macierzD, m1.wektorD);
-            long elapsedTime = System.nanoTime() - start;
-            dataLine = dataLine + (double) elapsedTime / 1000000000 + " / ";
-            System.out.println((double) elapsedTime / 1000000000);
-
-            start = System.nanoTime();
-            PG(m2.macierzD, m2.wektorD);
-            elapsedTime = System.nanoTime() - start;
-            dataLine = dataLine + (double)elapsedTime / 1000000000 + " / ";
-            System.out.println((double) elapsedTime / 1000000000);
-
-            start = System.nanoTime();
-            FG(m3.macierzD, m3.wektorD);
-            elapsedTime = System.nanoTime() - start;
-            dataLine = dataLine + (double) elapsedTime / 1000000000 ;
-            System.out.println((double) elapsedTime / 1000000000);
-
-            writer.write(dataLine);
-            writer.write("\n");
-        }
-        writer.close();
-    }
-
     public static void main(String[] args) throws IOException {
 
-        //H1
-        H1();
+        //Testy.H1();
+        Testy.E1();
 
         //E1
 //        N = 500;
@@ -527,9 +486,9 @@ public class MojaMacierz {
 //        long elapsedTime = System.nanoTime() - start;
 //        System.out.println((double) elapsedTime / 1000000000 );
 //
-//        start = System.nanoTime();
+//        long start = System.nanoTime();
 //        G(m2.macierzU, m2.wektorU);
-//        elapsedTime = System.nanoTime() - start;
+//        long elapsedTime = System.nanoTime() - start;
 //        System.out.println(elapsedTime);
 
 //        //test poprawnosci
@@ -540,7 +499,7 @@ public class MojaMacierz {
 //        drukujMacierz(m1.macierzF, m1.wektorF);
 //        drukujMacierz(m2.macierzF, m2.wektorF);
 //
-//        PG(m1.macierzU, m1.wektorU);
+//        G(m1.macierzU, m1.wektorU);
 //        Ulamek[] wynik1 = dajWynik(m1.macierzU, m1.wektorU);
 //        Ulamek[] wynik2 = FG(m2.macierzU, m2.wektorU);
 //
