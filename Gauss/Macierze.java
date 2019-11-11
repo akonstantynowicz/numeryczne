@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Macierze {
 
-    public static int N=4;
+    public int N;
 
     public float[][] macierzF;
     public double[][] macierzD;
@@ -15,7 +15,8 @@ public class Macierze {
     public double[] wektorD;
     public Ulamek[] wektorU;
 
-    public Macierze() {
+    public Macierze(int N) {
+        this.N = N;
         macierzF = new float[N][N];
         macierzD = new double[N][N];
         macierzU = new Ulamek[N][N];
@@ -53,6 +54,20 @@ public class Macierze {
             wektorF[i]= (float) r/65536;
             wektorD[i]= (double) r/65536;
             wektorU[i]= new Ulamek((double) r/65536);
+        }
+    }
+
+    public void kopiujMacierz(Macierze m) {
+        for (int i=0;i<N;i++) {
+            for (int j = 0; j < N; j++) {
+                this.macierzF[i][j] = m.macierzF[i][j];
+                this.macierzD[i][j] = m.macierzD[i][j];
+                this.macierzU[i][j] = m.macierzU[i][j];
+
+                this.wektorF[i] = m.wektorF[i];
+                this.wektorD[i] = m.wektorD[i];
+                this.wektorU[i] = m.wektorU[i];
+            }
         }
     }
 }
