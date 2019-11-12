@@ -35,6 +35,7 @@ public class Macierze {
 
         losujMacierz();
         losujWektorX();
+        obliczWektor();
     }
 
     static int losujR(){
@@ -68,8 +69,8 @@ public class Macierze {
     public void obliczWektor(){
       for (int i=0;i<N;i++) {
           for (int j=0;j<N;j++){
-            wektorF[i] = wektorF[i] + macierzF[i][j]*wektorXF[i];
-            wektorD[i] = wektorD[i] + macierzD[i][j]*wektorXD[i];
+            wektorF[i] = wektorF[i] + macierzF[i][j]*wektorXF[j];
+            wektorD[i] = wektorD[i] + macierzD[i][j]*wektorXD[j];
             //wektorU[i] = wektorU[i] + macierzU[i][j]*wektorXU[i];
           }
       }
