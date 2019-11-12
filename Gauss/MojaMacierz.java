@@ -6,6 +6,7 @@ import static java.lang.Math.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Random;
 
 public class MojaMacierz {
@@ -454,6 +455,16 @@ public class MojaMacierz {
         return norma;
     }
 
+
+    static public Ulamek obliczNormę(Ulamek[] wektor){
+        Ulamek suma = new Ulamek(BigInteger.ZERO, BigInteger.ONE);
+        for (int i=0;i<N;i++){
+            suma = suma.add(wektor[i].multiply(wektor[i]));
+        }
+        Ulamek norma = suma.sqrt();
+        return norma;
+    }
+
     static void drukujMacierz(float[][] A, float[] B) {
 
         for (int i = 0; i < N; i++) {
@@ -494,7 +505,7 @@ public class MojaMacierz {
     public static void main(String[] args) throws IOException {
 
         //Testy.H1();
-        Testy.E1();
+        //Testy.E1();
 
         //E1
 //        N = 500;
