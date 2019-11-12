@@ -77,7 +77,14 @@ public class Ulamek {
     }
 
     public Ulamek divide(Ulamek u) {
-        return new Ulamek( this.licznik.multiply(u.mianownik), this.mianownik.multiply(u.licznik));
+        return new Ulamek(this.licznik.multiply(u.mianownik), this.mianownik.multiply(u.licznik));
+    }
+
+    public Ulamek add(Ulamek u) {
+        return new Ulamek(
+                this.licznik.multiply(u.mianownik).add(u.licznik.multiply(this.mianownik)),
+                this.mianownik.multiply(u.mianownik)
+        );
     }
 
     public Ulamek abs() {
