@@ -77,7 +77,33 @@ public class Ulamek {
     }
 
     public Ulamek divide(Ulamek u) {
-        return new Ulamek( this.licznik.multiply(u.mianownik), this.mianownik.multiply(u.licznik));
+        return new Ulamek(this.licznik.multiply(u.mianownik), this.mianownik.multiply(u.licznik));
+    }
+
+    public Ulamek add(Ulamek u) {
+        return new Ulamek(
+                this.licznik.multiply(u.mianownik).add(u.licznik.multiply(this.mianownik)),
+                this.mianownik.multiply(u.mianownik)
+        );
+    }
+
+    public static BigInteger sqrt(BigInteger val) {
+        BigInteger half = BigInteger.ZERO.setBit(val.bitLength() / 2);
+        BigInteger cur = half;
+
+        while (true) {
+            BigInteger tmp = half.add(val.divide(half)).shiftRight(1);
+
+            if (tmp.equals(half) || tmp.equals(cur))
+                return tmp;
+
+            cur = half;
+            half = tmp;
+        }
+    }
+
+    public Ulamek sqrt() {
+        return new Ulamek(sqrt(this.licznik), sqrt(this.mianownik));
     }
 
     public Ulamek abs() {

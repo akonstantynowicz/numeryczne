@@ -10,7 +10,9 @@ public class Testy {
 
         for (int i = 5; i <= 100; i = i + 5) {
 
-            N = i;
+            MojaMacierz.N = i;
+            N = MojaMacierz.N;
+
             Macierze m1 = new Macierze(N);
             Macierze m2 = new Macierze(N);
             Macierze m3 = new Macierze(N);
@@ -50,7 +52,8 @@ public class Testy {
     public static void E1() throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter("gaussWynikiE1.txt"));
 
-        int N = 500;
+        MojaMacierz.N = 500;
+        int N = MojaMacierz.N;
 
         Macierze m1 = new Macierze(N);
         Macierze m2 = new Macierze(N);

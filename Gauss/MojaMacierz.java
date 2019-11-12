@@ -6,6 +6,7 @@ import static java.lang.Math.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Random;
 
 public class MojaMacierz {
@@ -14,6 +15,7 @@ public class MojaMacierz {
     static void G(float[][] A, float[] B) {
         int j;
         float wspolczynnik;
+        System.out.println("G dla F, N = " + N);
         for (int i = 0; i < N; i++) {
             j = i;
             for (int k = i + 1; k < N; k++) {
@@ -68,6 +70,7 @@ public class MojaMacierz {
         int p;
         int j;
         float wspolczynnik;
+        System.out.println("PG dla F, N = " + N);
         for (int i = 0; i < N; i++) {
             j = i;
             max = abs(A[i][j]);
@@ -104,6 +107,7 @@ public class MojaMacierz {
         int p;
         int j;
         double wspolczynnik;
+        System.out.println("PG dla D, N = " + N);
         for (int i = 0; i < N; i++) {
             j = i;
             max = abs(A[i][j]);
@@ -140,6 +144,7 @@ public class MojaMacierz {
         int p;
         int j;
         Ulamek wspolczynnik;
+        System.out.println("PG dla U, N = " + N);
         for (int i = 0; i < N; i++) {
             j = i;
             max = A[i][j].abs();
@@ -172,6 +177,7 @@ public class MojaMacierz {
     }
 
     static float[] FG(float[][] A, float[] B) {
+        System.out.println("FG dla F, N = " + N);
         int[] Q = new int[N];
         for (int i = 0; i < N; i++) {
             Q[i] = i;
@@ -228,6 +234,7 @@ public class MojaMacierz {
     }
 
     static double[] FG(double[][] A, double[] B) {
+        System.out.println("FG dla D, N = " + N);
         int[] Q = new int[N];
         for (int i = 0; i < N; i++) {
             Q[i] = i;
@@ -284,6 +291,7 @@ public class MojaMacierz {
     }
 
     static Ulamek[] FG(Ulamek[][] A, Ulamek[] B) {
+        System.out.println("FG dla U, N = " + N);
         int[] Q = new int[N];
         for (int i = 0; i < N; i++) {
             Q[i] = i;
@@ -444,6 +452,16 @@ public class MojaMacierz {
           suma=suma+pow(wektor[i],2);
         }
         norma=sqrt(suma);
+        return norma;
+    }
+
+
+    static public Ulamek obliczNormę(Ulamek[] wektor){
+        Ulamek suma = new Ulamek(BigInteger.ZERO, BigInteger.ONE);
+        for (int i=0;i<N;i++){
+            suma = suma.add(wektor[i].multiply(wektor[i]));
+        }
+        Ulamek norma = suma.sqrt();
         return norma;
     }
 
