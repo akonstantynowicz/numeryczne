@@ -437,7 +437,7 @@ public class MojaMacierz {
         return wynik;
     }
 
-    static public float obliczNormę(float[] wektor){
+    static public float obliczNorme(float[] wektor){
         float norma,suma=0;
         for (int i=0;i<N;i++){
           suma=suma+(float)pow(wektor[i],2);
@@ -446,7 +446,7 @@ public class MojaMacierz {
         return norma;
     }
 
-    static public double obliczNormę(double[] wektor){
+    static public double obliczNorme(double[] wektor){
         double norma,suma=0;
         for (int i=0;i<N;i++){
           suma=suma+pow(wektor[i],2);
@@ -504,6 +504,10 @@ public class MojaMacierz {
 
     public static void main(String[] args) throws IOException {
 
+
+        Macierze m = new Macierze(N);
+        G(m.macierzF,m.wektorF);
+        System.out.println(obliczNorme(dajWynik(m.macierzF,m.wektorF)) + " =? " + obliczNorme(m.wektorXF));
         //Testy.H1();
         //Testy.E1();
 

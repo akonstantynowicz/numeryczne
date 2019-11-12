@@ -35,6 +35,7 @@ public class Macierze {
 
         losujMacierz();
         losujWektorX();
+        obliczWektor();
     }
 
     static int losujR(){
