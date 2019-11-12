@@ -349,6 +349,7 @@ public class MojaMacierz {
     static float[] dajWynikFG(float[][] A, float[] B, int[] Q) {
         float[] wyniktmp = new float[N];
         float[] wynik = new float[N];
+        float norma,suma=0;
         float[] tmp = new float[N - 1];
         for (int i = N - 1; i >= 0; i--) {
             for (int j = N - 1; j > i; j--) {
@@ -359,7 +360,9 @@ public class MojaMacierz {
         }
         for (int i = 0; i < N; i++) {
             wynik[Q[i]] = wyniktmp[i];
+            suma=suma+pow(wynik[Q[i]],2);
         }
+        norma=sqrt(suma);
         return wynik;
     }
 
@@ -367,6 +370,7 @@ public class MojaMacierz {
         double[] wyniktmp = new double[N];
         double[] wynik = new double[N];
         double[] tmp = new double[N - 1];
+        double norma,suma=0;
         for (int i = N - 1; i >= 0; i--) {
             for (int j = N - 1; j > i; j--) {
                 tmp[j - 1] = A[i][j] * wyniktmp[j];
@@ -376,7 +380,9 @@ public class MojaMacierz {
         }
         for (int i = 0; i < N; i++) {
             wynik[Q[i]] = wyniktmp[i];
+            suma=suma+pow(wynik[Q[i]],2);
         }
+        norma=sqrt(suma);
         return wynik;
     }
 
@@ -400,26 +406,32 @@ public class MojaMacierz {
     static float[] dajWynik(float[][] A, float[] B) {
         float[] wynik = new float[N];
         float[] tmp = new float[N - 1];
+        float norma,suma=0;
         for (int i = N - 1; i >= 0; i--) {
             for (int j = N - 1; j > i; j--) {
                 tmp[j - 1] = A[i][j] * wynik[j];
                 B[i] = B[i] - tmp[j - 1];
             }
             wynik[i] = B[i] / A[i][i];
+            suma=suma+pow(wynik[i],2);
         }
+        norma=sqrt(suma);
         return wynik;
     }
 
     static double[] dajWynik(double[][] A, double[] B) {
         double[] wynik = new double[N];
         double[] tmp = new double[N - 1];
+        double norma,suma=0;
         for (int i = N - 1; i >= 0; i--) {
             for (int j = N - 1; j > i; j--) {
                 tmp[j - 1] = A[i][j] * wynik[j];
                 B[i] = B[i] - tmp[j - 1];
             }
             wynik[i] = B[i] / A[i][i];
+            suma=suma+pow(wynik[i],2);
         }
+        norma=sqrt(suma);
         return wynik;
     }
 
@@ -434,6 +446,25 @@ public class MojaMacierz {
             wynik[i] = B[i].divide(A[i][i]);
         }
         return wynik;
+    }
+
+
+    static public float obliczNormę(float[] wektor){
+        float norma,suma=0;
+        for (int i=0;i<N;i++){
+          suma=suma+pow(wektor[i],2);
+        }
+        norma=sqrt(suma);
+        return norma;
+    }
+
+    static public double obliczNormę(double[] wektor){
+        double norma,suma=0;
+        for (int i=0;i<N;i++){
+          suma=suma+pow(wektor[i],2);
+        }
+        norma=sqrt(suma);
+        return norma;
     }
 
     static void drukujMacierz(float[][] A, float[] B) {
