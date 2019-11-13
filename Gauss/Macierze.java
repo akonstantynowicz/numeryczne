@@ -67,12 +67,21 @@ public class Macierze {
     }
 
     public void obliczWektor(){
+      zerujWektor();
       for (int i=0;i<N;i++) {
           for (int j=0;j<N;j++){
             wektorF[i] = wektorF[i] + macierzF[i][j]*wektorXF[j];
             wektorD[i] = wektorD[i] + macierzD[i][j]*wektorXD[j];
-            wektorU[i] = wektorU[i].add(macierzU[i][j].multiply(wektorXU[j]));
+          //  wektorU[i] = wektorU[i].add(macierzU[i][j].multiply(wektorXU[j]));
           }
+      }
+    }
+
+    public void zerujWektor(){
+      for (int i=0;i<N;i++) {
+        wektorF[i]=0;
+        wektorD[i]=0;
+        wektorU[i]=new Ulamek((double) 0);
       }
     }
 
@@ -82,6 +91,10 @@ public class Macierze {
                 this.macierzF[i][j] = m.macierzF[i][j];
                 this.macierzD[i][j] = m.macierzD[i][j];
                 this.macierzU[i][j] = m.macierzU[i][j];
+
+                this.wektorXF[i] = m.wektorXF[i];
+                this.wektorXD[i] = m.wektorXD[i];
+                this.wektorXU[i] = m.wektorXU[i];
 
                 this.wektorF[i] = m.wektorF[i];
                 this.wektorD[i] = m.wektorD[i];
