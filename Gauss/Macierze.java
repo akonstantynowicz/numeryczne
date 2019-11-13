@@ -72,7 +72,7 @@ public class Macierze {
           for (int j=0;j<N;j++){
             wektorF[i] = wektorF[i] + macierzF[i][j]*wektorXF[j];
             wektorD[i] = wektorD[i] + macierzD[i][j]*wektorXD[j];
-          //  wektorU[i] = wektorU[i].add(macierzU[i][j].multiply(wektorXU[j]));
+            wektorU[i] = wektorU[i].add(macierzU[i][j].multiply(wektorXU[j]));
           }
       }
     }
