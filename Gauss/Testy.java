@@ -283,4 +283,83 @@ public class Testy {
         }
 
     }
+    public static void Q1() throws IOException {
+
+      BufferedWriter writer = new BufferedWriter(new FileWriter("gaussWynikiQ1G.txt"));
+      BufferedWriter writer1 = new BufferedWriter(new FileWriter("gaussWynikiQ1FG.txt"));
+      double sredniBladG, sredniBladFG;
+
+      int N;
+      for (int i=5; i<100; i++){
+        MojaMacierz.N = i;
+        N = MojaMacierz.N;
+        Macierze m1 = new Macierze(N);
+        Macierze m2 = new Macierze(N);
+        m2.kopiujMacierz(m1);
+        sredniBladG=0;
+        sredniBladFG=0;
+        for(int j=0;j<100;j++){
+            MojaMacierz.G(m1.macierzD,m1.wektorD);
+            sredniBladG = sredniBladG + abs(MojaMacierz.obliczNorme(m1.wektorXD)-MojaMacierz.obliczNorme(MojaMacierz.dajWynik(m1.macierzD,m1.wektorD)))/MojaMacierz.obliczNorme(m1.wektorXD);
+            sredniBladFG = sredniBladFG + abs(MojaMacierz.obliczNorme(m2.wektorXD)-MojaMacierz.obliczNorme(MojaMacierz.FG(m2.macierzD,m2.wektorD)))/MojaMacierz.obliczNorme(m2.wektorXD);
+
+            m1.losujMacierz();
+            m1.losujWektorX();
+            m1.obliczWektor();
+            m2.kopiujMacierz(m1);
+        }
+        writer.write(i + " " + String.valueOf(sredniBladG/100));
+        writer.write("\n");
+
+        writer1.write(i + " " + String.valueOf(sredniBladFG/100));
+        writer1.write("\n");
+      }
+      writer.close();
+      writer1.close();
+    }
+
+    public static void Q2() throws IOException {
+      BufferedWriter writer1 = new BufferedWriter(new FileWriter("gaussWynikiQ2TF.txt"));
+      BufferedWriter writer2 = new BufferedWriter(new FileWriter("gaussWynikiQ2TD.txt"));
+      BufferedWriter writer3 = new BufferedWriter(new FileWriter("gaussWynikiQ2TU.txt"));
+      long start,elapsedTime;
+      String dataLine;
+      int N;
+      for (int i=5; i<100; i++){
+        MojaMacierz.N = i;
+        N = MojaMacierz.N;
+        Macierze m1 = new Macierze(N);
+
+        start = System.nanoTime();
+        MojaMacierz.PG(m1.macierzF, m1.wektorF);
+        MojaMacierz.dajWynik(m1.macierzF, m1.wektorF);
+        elapsedTime = System.nanoTime() - start;
+        dataLine = String.valueOf((double) elapsedTime/1000000000);
+        writer1.write(i + " " + dataLine);
+        writer1.write("\n");
+
+        start = System.nanoTime();
+        MojaMacierz.PG(m1.macierzD, m1.wektorD);
+        MojaMacierz.dajWynik(m1.macierzD, m1.wektorD);
+        elapsedTime = System.nanoTime() - start;
+        dataLine = String.valueOf((double) elapsedTime/1000000000);
+        writer2.write(i + " " + dataLine);
+        writer2.write("\n");
+
+        if(i<36){
+          start = System.nanoTime();
+          MojaMacierz.PG(m1.macierzU, m1.wektorU);
+          MojaMacierz.dajWynik(m1.macierzU, m1.wektorU);
+          elapsedTime = System.nanoTime() - start;
+          dataLine = String.valueOf((double) elapsedTime/1000000000);
+          writer3.write(i + " " + dataLine);
+          writer3.write("\n");
+        }
+
+      }
+      writer1.close();
+      writer2.close();
+      writer3.close();
+
+    }
 }

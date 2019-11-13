@@ -508,6 +508,8 @@ public class MojaMacierz {
         //Testy.H1();
         //Testy.E1();
         //Testy.H3();
+	//Testy.Q1();
+	//Testy.Q2();
 
 //        //test poprawnosci
 //        Macierze m1 = new Macierze(N);
