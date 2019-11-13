@@ -1,6 +1,8 @@
 //Anna Konstantynowicz, gr. 3
 //Marcin Szczepaniak, gr. 3
 
+import javax.crypto.Mac;
+
 import static java.lang.Math.*;
 
 import java.io.BufferedWriter;
@@ -50,9 +52,7 @@ public class MojaMacierz {
     static void G(Ulamek[][] A, Ulamek[] B) {
         int j;
         Ulamek wspolczynnik;
-        //System.out.println("G dla U,  N = " + N);
         for (int i = 0; i < N; i++) {
-
             j = i;
             for (int k = i + 1; k < N; k++) {
                 wspolczynnik = A[k][j].divide(A[i][j]);
@@ -504,30 +504,10 @@ public class MojaMacierz {
 
     public static void main(String[] args) throws IOException {
 
-
-        Testy.H2();
+        //Testy.H2();
         //Testy.H1();
         //Testy.E1();
-
-        //E1
-//        N = 500;
-//        Macierze m1 = new Macierze(N);
-//        Macierze m2 = new Macierze(N);
-//        Macierze m3 = new Macierze(N);
-//
-//        m2.kopiujMacierz(m1);
-//        m3.kopiujMacierz(m1);
-//        System.out.println("==============================");
-//
-//        long start = System.nanoTime();
-//        G(m1.macierzD, m1.wektorD);
-//        long elapsedTime = System.nanoTime() - start;
-//        System.out.println((double) elapsedTime / 1000000000 );
-//
-//        long start = System.nanoTime();
-//        G(m2.macierzU, m2.wektorU);
-//        long elapsedTime = System.nanoTime() - start;
-//        System.out.println(elapsedTime);
+        //Testy.H3();
 
 //        //test poprawnosci
 //        Macierze m1 = new Macierze(N);
