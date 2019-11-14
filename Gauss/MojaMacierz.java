@@ -465,6 +465,14 @@ public class MojaMacierz {
         return norma;
     }
 
+    static public Ulamek[] odejmijWektory(Ulamek[] wektor1, Ulamek wektor2[]){
+        Ulamek wektor[] = new Ulamek[N]
+        for (int i=0;i<N;i++){
+            wektor[i]=wektor2[i].substract(wektor1[i]);
+        }
+        return wektor;
+    }
+
     static void drukujMacierz(float[][] A, float[] B) {
 
         for (int i = 0; i < N; i++) {
